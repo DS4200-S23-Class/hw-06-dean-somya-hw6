@@ -53,19 +53,33 @@ const handleMouseover = (event, d) => {
   const id = d.id;
   const species = d.Species;
   const element = FRAME1.select(`#circle-${id}`);
-  element.style("opacity", "100%")
-  element.style("stroke", "orange")
-  element.style("stroke-width", "2px")
-  let bar = FRAME3.select('#rect-1');
+  element.style("opacity", "100%");
+  element.style("stroke", "orange");
+  element.style("stroke-width", "2px");
+  let bar = FRAME3.select("#rect-1");
   if (species === "versicolor") {
-    bar = FRAME3.select('#rect-2');
+    bar = FRAME3.select("#rect-2");
   } else if (species === "virginica") {
-    bar = FRAME3.select('#rect-3');
+    bar = FRAME3.select("#rect-3");
   }
   bar.style("stroke", "orange");
   bar.style("stroke-width", "3px");
-  
-}
+};
+
+const handleMouseleave = (event, d) => {
+  const id = d.id;
+  const species = d.Species;
+  const element = FRAME1.select(`#circle-${id}`);
+  element.style("opacity", "50%");
+  element.style("stroke", "none");
+  let bar = FRAME3.select("#rect-1");
+  if (species === "versicolor") {
+    bar = FRAME3.select("#rect-2");
+  } else if (species === "virginica") {
+    bar = FRAME3.select("#rect-3");
+  }
+  bar.style("stroke", "none");
+};
 
 d3.csv("./data/iris.csv").then((data) => {
   FRAME2.selectAll("circle")
@@ -77,7 +91,8 @@ d3.csv("./data/iris.csv").then((data) => {
     .attr("r", pointRadius2)
     .attr("fill", (d) => chooseColor(d))
     .attr("opacity", "50%")
-    .on("mouseover", handleMouseover);
+    .on("mouseover", handleMouseover)
+    .on("mouseleave", handleMouseleave);
 });
 
 const FRAME3 = d3
